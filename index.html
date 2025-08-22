@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>This Is Malaysia</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            scroll-behavior: smooth;
+            background: linear-gradient(135deg, #CC0001 0%, #FFFFFF 25%, #010066 75%, #FFCC00 100%);
+        }
+
+        /* Header */
+        #Header {
+            background: linear-gradient(135deg, #CC0001 0%, #010066 50%, #CC0001 100%);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(204,0,1,0.4);
+            border-bottom: 4px solid #FFCC00;
+        }
+
+        #Header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" fill="rgba(255,255,255,0.1)"><polygon points="0,100 1000,0 1000,100"/></svg>');
+            background-size: cover;
+        }
+
+        #Header h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            animation: fadeInUp 1s ease-out;
+        }
+
+        /* Navigation */
+        #nav {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 300px;
+            height: 100vh;
+            background: linear-gradient(180deg, #010066 0%, #CC0001 100%);
+            padding: 2rem 0;
+            box-shadow: -5px 0 15px rgba(204,0,1,0.4);
+            transition: right 0.3s ease;
+            z-index: 1000;
+            overflow-y: auto;
+            border-left: 4px solid #FFCC00;
+        }
+
+        #nav.active {
+            right: 0;
+        }
+
+        #nav a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 1rem 2rem;
+            margin: 0.5rem 0;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+
+        #nav a:hover, #nav a.active {
+            background: rgba(255,204,0,0.2);
+            border-left: 4px solid #FFCC00;
+            transform: translateX(10px);
+            color: #FFCC00;
+        }
+
+        #nav a i {
+            margin-right: 10px;
+            width: 20px;
+        }
+
+        /* Menu Toggle */
+        .menu-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #CC0001;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1001;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(204, 0, 1, 0.4);
+            border: 2px solid #FFCC00;
+        }
+
+        .menu-toggle:hover {
+            background: #010066;
+            transform: scale(1.1);
+        }
+
+        .menu-toggle i {
+            font-size: 1.2rem;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.95);
+            margin-bottom: 3rem;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .section-header {
+            background: linear-gradient(135deg, #CC0001 0%, #010066 100%);
+            color: white;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .section-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #FFCC00, #FFFFFF, #CC0001, #010066, #FFCC00);
+        }
+
+        .section h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .section h1 i {
+            margin-right: 15px;
+            font-size: 2rem;
+        }
+
+        .section-content {
+            padding: 2rem;
+        }
+
+        .section p {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            text-align: justify;
+            color: #555;
+        }
+
+        .section h2 {
+            color: #010066;
+            margin: 2rem 0 1rem 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+            padding-left: 20px;
+            border-left: 4px solid #CC0001;
+            display: flex;
+            align-items: center;
+        }
+
+        .section h2 i {
+            margin-right: 10px;
+            color: #CC0001;
+        }
+
+        /* Attractions Grid */
+        .attractions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .attraction-card {
+            background: linear-gradient(145deg, #f0f2f5, #ffffff);
+            border-radius: 15px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .attraction-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(204, 0, 1, 0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.5s ease;
+            opacity: 0;
+        }
+
+        .attraction-card:hover::before {
+            animation: shimmer 1s ease-in-out;
+            opacity: 1;
+        }
+
+        .attraction-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        /* Scroll Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #CC0001, #FFCC00, #010066, #FFFFFF, #CC0001);
+            z-index: 999;
+            transition: width 0.3s ease;
+        }
+
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #CC0001;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 100;
+            box-shadow: 0 4px 15px rgba(204, 0, 1, 0.4);
+            border: 2px solid #FFCC00;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background: #010066;
+            transform: translateY(-5px);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                transform: translateX(-100%) translateY(-100%) rotate(45deg);
+            }
+            100% {
+                transform: translateX(100%) translateY(100%) rotate(45deg);
+            }
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            #Header h1 {
+                font-size: 2.5rem;
+                letter-spacing: 1px;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .section h1 {
+                font-size: 2rem;
+            }
+
+            .attractions-grid {
+                grid-template-columns: 1fr;
+            }
+
+            #nav {
+                width: 100%;
+                right: -100%;
+            }
+        }
+
+        /* Image Styles */
+        .section-image {
+            width: 100%;
+            height: 250px;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            border-radius: 15px;
+            margin: 1.5rem 0;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .section-image:hover {
+            transform: scale(1.02);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.3);
+        }
+
+        .section-image::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 50px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.3));
+        }
+
+        .image-caption {
+            position: absolute;
+            bottom: 10px;
+            left: 15px;
+            right: 15px;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+            z-index: 2;
+        }
+
+        .attraction-card .attraction-image {
+            width: 100%;
+            height: 180px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .attraction-card:hover .attraction-image {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        .flag-stripe {
+            height: 4px;
+            background: repeating-linear-gradient(
+                90deg,
+                #CC0001 0px,
+                #CC0001 10px,
+                #FFFFFF 10px,
+                #FFFFFF 20px
+            );
+            margin: 1rem 0;
+            border-radius: 2px;
+        }
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+    </style>
+</head>
+<body>
+    <!-- Progress Bar -->
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Menu Toggle -->
+    <button class="menu-toggle" id="menuToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Overlay -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Navigation -->
+    <nav id="nav">
+        <a href="#culture" data-section="culture"><i class="fas fa-users"></i>Culture</a>
+        <a href="#history" data-section="history"><i class="fas fa-landmark"></i>History</a>
+        <a href="#food" data-section="food"><i class="fas fa-utensils"></i>Food</a>
+        <a href="#location" data-section="location"><i class="fas fa-map-marker-alt"></i>Location</a>
+        <a href="#attractions" data-section="attractions"><i class="fas fa-camera"></i>Attractions</a>
+    </nav>
+
+    <!-- Header -->
+    <header id="Header">
+        <h1>THIS IS MALAYSIA</h1>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Culture Section -->
+        <section class="section" id="culture">
+            <div class="section-header">
+                <h1><i class="fas fa-users"></i>Culture</h1>
+            </div>
+            <div class="section-content">
+                <p>Malaysia is a multicultural and multiethnic country known for its rich and diverse cultural heritage. The three main ethnic groups—Malay, Chinese, and Indian—along with various indigenous communities, have shaped a unique and colorful cultural identity. This blend is evident in everyday life, from the languages spoken to the variety of foods and traditional clothing worn across the country.</p>
+                <p>Religion and festivals also play an important role in Malaysian culture. While Islam is the official religion, the country embraces religious freedom, and major festivals such as Hari Raya, Chinese New Year, Deepavali, and Gawai are celebrated nationwide. Malaysians are widely recognized for their hospitality, respect for traditions, and the ability to live harmoniously in a multicultural society.</p>
+            </div>
+        </section>
+
+        <!-- History Section -->
+        <section class="section" id="history">
+            <div class="section-header">
+                <h1><i class="fas fa-landmark"></i>History</h1>
+            </div>
+            <div class="section-content">
+                <p>The history of Malaysia dates back thousands of years, with early evidence of human settlement and trade activity in the region. By the 1st century AD, the Malay Peninsula had become an important part of maritime trade routes between China, India, and the Middle East. Several powerful kingdoms and empires, such as the Srivijaya and later the Malacca Sultanate (founded in the 15th century), rose to prominence. The Malacca Sultanate played a key role in spreading Islam and became a major center for trade and culture in Southeast Asia.</p>
+                <p>In the 16th century, European powers began to colonize the region, starting with the Portuguese, followed by the Dutch, and finally the British, who gained control in the 19th century. After World War II and a period of Japanese occupation, nationalist movements grew stronger. In 1957, the Federation of Malaya gained independence from Britain, and in 1963, Malaysia was formed, including Malaya, Sabah, Sarawak, and initially Singapore (which left in 1965). Since then, Malaysia has developed rapidly and continues to balance its rich cultural heritage with modern growth.</p>
+            </div>
+        </section>
+
+        <!-- Food Section -->
+        <section class="section" id="food">
+            <div class="section-header">
+                <h1><i class="fas fa-utensils"></i>Food</h1>
+            </div>
+            <div class="section-content">
+                <p>Malaysian cuisine is known for its rich flavors and cultural diversity. It blends Malay, Chinese, and Indian influences, creating unique dishes like nasi lemak, char kway teow, and roti canai. The use of spices, coconut milk, and sambal gives Malaysian food its bold and aromatic taste.</p>
+            </div>
+        </section>
+
+        <!-- Location Section -->
+        <section class="section" id="location">
+            <div class="section-header">
+                <h1><i class="fas fa-map-marker-alt"></i>Location</h1>
+            </div>
+            <div class="section-content">
+                <p>Malaysia is located in Southeast Asia, divided into two main regions: Peninsular Malaysia and East Malaysia. Peninsular Malaysia lies on the Malay Peninsula, sharing land borders with Thailand to the north and connected to Singapore in the south via causeways and a bridge. East Malaysia, situated on the island of Borneo, shares borders with Indonesia and Brunei.</p>
+                <p>Geographically, Malaysia is surrounded by important bodies of water. The South China Sea separates Peninsular and East Malaysia, while the Straits of Malacca, one of the world's busiest shipping lanes, lies to the west. Its strategic location along major sea routes has made Malaysia an important crossroads for trade, culture, and migration throughout history.</p>
+            </div>
+        </section>
+
+        <!-- Attractions Section -->
+        <section class="section" id="attractions">
+            <div class="section-header">
+                <h1><i class="fas fa-camera"></i>Attractions</h1>
+            </div>
+            <div class="section-content">
+                <div class="attractions-grid">
+                    <div class="attraction-card">
+                        <h2><i class="fas fa-building"></i>Petronas Twin Towers (Kuala Lumpur)</h2>
+                        <p>These iconic twin skyscrapers are a symbol of modern Malaysia.</p>
+                    </div>
+                    <div class="attraction-card">
+                        <h2><i class="fas fa-umbrella-beach"></i>Langkawi Island</h2>
+                        <p>A tropical paradise known for its beaches, cable car, and duty-free shopping.</p>
+                    </div>
+                    <div class="attraction-card">
+                        <h2><i class="fas fa-palette"></i>Penang (George Town)</h2>
+                        <p>Famous for its street art, heritage buildings, and world-renowned street food.</p>
+                    </div>
+                    <div class="attraction-card">
+                        <h2><i class="fas fa-mountain"></i>Mount Kinabalu (Sabah)</h2>
+                        <p>The highest peak in Southeast Asia, popular with hikers and nature lovers.</p>
+                    </div>
+                    <div class="attraction-card">
+                        <h2><i class="fas fa-monument"></i>Malacca (Melaka)</h2>
+                        <p>A historic city with colonial architecture and rich cultural heritage.</p>
+                    </div>
+                    <div class="attraction-card">
+                        <h2><i class="fas fa-leaf"></i>Cameron Highlands</h2>
+                        <p>A cool hill station known for tea plantations and strawberry farms.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <script>
+        // DOM Elements
+        const menuToggle = document.getElementById('menuToggle');
+        const nav = document.getElementById('nav');
+        const overlay = document.getElementById('overlay');
+        const progressBar = document.getElementById('progressBar');
+        const backToTop = document.getElementById('backToTop');
+        const sections = document.querySelectorAll('.section');
+        const navLinks = document.querySelectorAll('#nav a');
+
+        // Menu Toggle
+        menuToggle.addEventListener('click', () => {
+            nav.classList.toggle('active');
+            overlay.classList.toggle('active');
+            const icon = menuToggle.querySelector('i');
+            icon.className = nav.classList.contains('active') ? 'fas fa-times' : 'fas fa-bars';
+        });
+
+        // Close menu when clicking overlay
+        overlay.addEventListener('click', () => {
+            nav.classList.remove('active');
+            overlay.classList.remove('active');
+            menuToggle.querySelector('i').className = 'fas fa-bars';
+        });
+
+        // Navigation Links
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+                
+                // Close mobile menu
+                nav.classList.remove('active');
+                overlay.classList.remove('active');
+                menuToggle.querySelector('i').className = 'fas fa-bars';
+                
+                // Update active nav link
+                navLinks.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+            });
+        });
+
+        // Scroll Progress Bar
+        function updateProgressBar() {
+            const windowHeight = window.innerHeight;
+            const documentHeight = document.documentElement.scrollHeight - windowHeight;
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const progress = (scrollTop / documentHeight) * 100;
+            progressBar.style.width = progress + '%';
+        }
+
+        // Back to Top Button
+        function toggleBackToTop() {
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        }
+
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Intersection Observer for section animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    
+                    // Update active navigation
+                    const sectionId = entry.target.id;
+                    navLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === `#${sectionId}`) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+
+        // Scroll Event Listeners
+        window.addEventListener('scroll', () => {
+            updateProgressBar();
+            toggleBackToTop();
+        });
+
+        // Initial calls
+        updateProgressBar();
+        toggleBackToTop();
+
+        // Smooth scrolling for all internal links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
